@@ -35,18 +35,18 @@ export default define({
           <div class="text-blue-500 flex gap-4">
             Break Points
             <label
-              for="toogleA" 
+              for="enableToggle" 
               class="flex items-center cursor-pointer"
             >
               <div class="relative">
                 <input 
-                  id="toogleA" 
+                  id="enableToggle" 
                   type="checkbox" 
                   class="sr-only"
                   onchange="${setPluginToggle}"
                   checked="${enabled ?? false}"
                 />
-                <div class="w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
+                <div class="w-10 h-4 bg-blue-500 rounded-full shadow-inner"></div>
                 <div class="dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition"></div>
             </div>
           </label>
