@@ -1,0 +1,39 @@
+{
+  "name": "css--bp-browser-ext",
+  "version": "0.1.0",
+  "description": "Browser Extension to show css breakpoints",
+  "scripts": {
+    "prebuild": "rm -rf dist .cache .parcel-cache",
+    "build:tailwind": "tailwindcss -i src/style.css -c tailwind.config.js -o dist/style.css",
+    "build:static": "cp manifest.json dist/ && cp -r icons/ dist/icons",
+    "watch": "rm -rf dist .cache .parcel-cache && NODE_ENV=development npm run build:tailwind && npm run build:static && parcel watch --no-hmr src/{background.ts,content-script.ts} src/popup/{menu.ts,menu.html} src/popup/**/*.ts",
+    "build": "NODE_ENV=production npm run build:tailwind && npm run build:static && parcel build src/{background.ts,content-script.ts}"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/feather-icons": "^4.7.0",
+    "feather-icons": "^4.28.0",
+    "hybrids": "^6.0.0",
+    "tailwindcss": "^2.2.7",
+    "web-ext": "^6.3.0"
+  },
+  "devDependencies": {
+    "@parcel/config-webextension": "^2.0.0-rc.0",
+    "@parcel/transformer-inline-string": "^2.0.0-rc.0",
+    "@types/webextension-polyfill": "^0.8.0",
+    "@typescript-eslint/eslint-plugin": "^4.29.2",
+    "@typescript-eslint/parser": "^4.29.2",
+    "autoprefixer": "^10.3.2",
+    "crx-hotreload": "^1.0.6",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-airbnb-typescript": "^13.0.0",
+    "eslint-plugin-import": "^2.24.1",
+    "parcel": "^2.0.0-rc.0",
+    "parcel-plugin-web-ext-tool": "^0.2.2",
+    "postcss-import": "^14.0.2",
+    "typescript": "^3.9.10",
+    "webextension-polyfill": "^0.8.0"
+  }
+}

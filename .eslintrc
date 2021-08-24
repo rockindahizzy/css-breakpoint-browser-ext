@@ -1,0 +1,24 @@
+{
+    "parserOptions": {
+        "project": "./tsconfig.json",
+        "ecmaVersion": 2019,
+        "sourceType": "module"
+    },
+    "extends": [
+        "airbnb-typescript/base"
+    ],
+    "ignorePatterns": [
+        "tailwind.config.js",
+        "postcss.config.js",
+        "bundle.d.ts"
+    ],
+    "rules": {
+        "import/extensions": "off",
+        "import/no-extraneous-dependencies": "off",
+        "max-len": ["error", 150],
+        "no-console": "off",
+        "no-plusplus": "off",
+        "operator-linebreak": ["error", "after"],
+        "@typescript-eslint/no-loop-func": "off"
+    }
+}

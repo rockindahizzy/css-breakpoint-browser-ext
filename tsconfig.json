@@ -1,0 +1,13 @@
+{
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "node_modules",
+    "tailwind.config.js"
+  ],
+  "compilerOptions": {
+    "lib": ["esnext", "dom"],
+    "target": "ES2015",
+    "outDir": "lib",
+    "declaration": false
+  }
+}

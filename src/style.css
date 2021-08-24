@@ -1,0 +1,22 @@
+@import "tailwindcss/base";
+@import "tailwindcss/utilities";
+
+.bp-container {
+    @apply
+        fixed
+        text-white
+        rounded-full
+        w-16
+        h-16
+        flex
+        flex-col
+        justify-center
+        text-center
+        m-2;
+}
+
+input:checked ~ .dot {
+    transform: translateX(100%);
+    background-color: #48bb78;
+}
+

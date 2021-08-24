@@ -1,0 +1,34 @@
+{
+  "manifest_version": 2,
+  "name": "CSS Breakpoint Extension",
+  "version": "0.1.0",
+  "description": "A browser extension that displays current tailwind breakpoint.",
+  "permissions": [
+    "activeTab",
+    "storage",
+    "tabs"
+  ],
+  "icons": {
+    "48": "icons/40.png",
+    "96": "icons/80.png"
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"]
+    }
+  ],
+  "browser_action": {
+    "default_title": "CSS Breakpoints",
+    "default_popup": "popup/menu.html"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "projects@divordie.com",
+      "strict_min_version": "53.0"
+    }
+  }
+}
