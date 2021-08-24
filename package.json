@@ -10,7 +10,7 @@
     "build": "NODE_ENV=production npm run build:tailwind && npm run build:static && parcel build src/{background.ts,content-script.ts}"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@types/feather-icons": "^4.7.0",
     "feather-icons": "^4.28.0",
