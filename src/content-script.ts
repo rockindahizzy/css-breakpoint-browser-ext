@@ -3,15 +3,17 @@ import cssText from 'bundle-text:../dist/style.css';
 import * as browser from 'webextension-polyfill';
 import Breakpoints, { BreakPoint } from './breakpoints';
 import { getValues } from './BrowserStorage';
+import draggable from './draggable';
 
 let selectedBreakpointRules;
 let shadowHost;
 let shadowRoot;
-let currentPosition;
+let currentPosition: string;
+let draggedPosition: { top: number, left: number };
 
 const html = `
 <style>${cssText}</style>
-<div id="bp-container" class="top-0 left-0 bp-container text-md" style="z-index: 9999;">
+<div id="bp-container" class="top-0 left-0 bp-container text-md cursor-move" style="z-index: 9999; box-shadow: black 0 0 12px">
   <div class="block  sm:hidden">MBL</div>
   <div class="hidden sm:block  md:hidden">SM</div>
   <div class="hidden md:block  lg:hidden ">MD</div>
@@ -43,6 +45,15 @@ const updateDisplay = (width: number, root: ShadowRoot) => {
     <div id="widthDisplay" class="text-sm">${window.innerWidth}</div>
   `;
   container.style.backgroundColor = breakPoint.color;
+  const leftPosition = Number(container.style.left.replace('px', ''));
+  const topPosition = Number(container.style.top.replace('px', ''));
+  if (leftPosition + container.offsetWidth > window.innerWidth) {
+    container.style.left = `${(window.innerWidth - container.offsetWidth) - 15 }px`;
+  }
+  if (topPosition + container.offsetHeight > window.innerHeight) {
+    container.style.top = `${(window.innerHeight - container.offsetHeight) - 15 }px`;
+  }
+  draggable(container);
 };
 
 window.onresize = () => {
@@ -50,8 +61,7 @@ window.onresize = () => {
 };
 
 const onChangePosition = (value) => {
-  currentPosition = value;
-  const container = shadowRoot.getElementById(('bp-container'));
+  const container = shadowRoot.getElementById('bp-container');
   const classList = container.classList;
   if (value.includes('Top')) {
     classList.replace('bottom-0', 'top-0');
@@ -73,6 +83,7 @@ const onChangeBreakpointRules = (value) => {
 const toggleDisplay = (isEnabled: boolean) => {
   if (isEnabled) {
     if (!selectedBreakpointRules && !currentPosition){
+      console.log('Is this happening?', { selectedBreakpointRules, currentPosition });
       selectedBreakpointRules = 'bootstrapBuiltIn';
       currentPosition = 'selectTopLeft';
     }
@@ -84,6 +95,11 @@ const toggleDisplay = (isEnabled: boolean) => {
       document.body.insertAdjacentElement('afterend', shadowHost);
     }
     onChangePosition(currentPosition);
+    if (draggedPosition){
+      const container = shadowRoot.getElementById('bp-container');
+      container.style.top = `${draggedPosition.top}px`;
+      container.style.left = `${draggedPosition.left}px`;
+    }
     updateDisplay(window.innerWidth, shadowRoot);
   } else {
     document.getElementById('breakpointCssHostContainer').remove();
@@ -92,8 +108,13 @@ const toggleDisplay = (isEnabled: boolean) => {
 
 browser.runtime.onMessage.addListener(({ action, value }) => {
   if (action === 'CHANGE_POSITION') {
+    shadowRoot.getElementById('bp-container').style.top = null;
+    shadowRoot.getElementById('bp-container').style.left = null;
+    draggedPosition = null;
+    currentPosition = value;
     onChangePosition(value);
   } else if (action === 'CHANGE_BREAKPOINT_RULE') {
+    selectedBreakpointRules = value;
     onChangeBreakpointRules(value);
   } else if (action == 'ENABLE_DISPLAY') {
     toggleDisplay(value);
@@ -113,5 +134,6 @@ getValues().then(values => {
   const hostValues = values[location.hostname];
   selectedBreakpointRules = hostValues.selectedRule ?? 'bootstrapBuiltIn';
   currentPosition = hostValues.displayPosition ?? 'selectTopLeft';
+  draggedPosition = hostValues.position;
   toggleDisplay(hostValues.isEnabled);
 });

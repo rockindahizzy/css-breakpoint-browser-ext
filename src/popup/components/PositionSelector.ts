@@ -23,28 +23,28 @@ const PositionSelector =  {
         <button 
           name="selectPos" 
           id="selectTopLeft" 
-          class="${selected === 'selectTopLeft' ? selectedClass : defaultClass} border-t-2 border-l-2 border-blue-500 w-full h-10"
+          class="${selected === 'selectTopLeft' ? selectedClass : defaultClass} border-t-2 border-l-2 border-blue-500 w-full h-14"
           onclick="${onSelectorClicked('selectTopLeft')}"
         >
         </button>
         <button 
           name="selectPos" 
           id="selectTopRight"
-          class="${selected === 'selectTopRight' ? selectedClass : defaultClass} border-t-2 border-r-2 border-blue-500 w-full h-10"
+          class="${selected === 'selectTopRight' ? selectedClass : defaultClass} border-t-2 border-r-2 border-blue-500 w-full h-14"
           onclick="${onSelectorClicked('selectTopRight')}"
         >
         </button>
         <button 
           name="selectPos" 
           id="selectBtmLeft"
-          class="${selected === 'selectBtmLeft' ? selectedClass : defaultClass} border-b-2 border-l-2 border-blue-500 w-full h-10"
+          class="${selected === 'selectBtmLeft' ? selectedClass : defaultClass} border-b-2 border-l-2 border-blue-500 w-full h-14"
           onclick="${onSelectorClicked('selectBtmLeft')}"
         >
         </button>
         <button 
           name="selectPos" 
           id="selectBtmRight"
-          class="${selected === 'selectBtmRight' ? selectedClass : defaultClass} border-b-2 border-r-2 border-blue-500 w-full h-10"
+          class="${selected === 'selectBtmRight' ? selectedClass : defaultClass} border-b-2 border-r-2 border-blue-500 w-full h-14"
           onclick="${onSelectorClicked('selectBtmRight')}"
         >
         </button>

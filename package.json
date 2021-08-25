@@ -7,7 +7,7 @@
     "build:tailwind": "tailwindcss -i src/style.css -c tailwind.config.js -o dist/style.css",
     "build:static": "cp manifest.json dist/ && cp -r icons/ dist/icons",
     "watch": "rm -rf dist .cache .parcel-cache && NODE_ENV=development npm run build:tailwind && npm run build:static && parcel watch --no-hmr src/{background.ts,content-script.ts} src/popup/{menu.ts,menu.html} src/popup/**/*.ts",
-    "build": "NODE_ENV=production npm run build:tailwind && npm run build:static && parcel build src/{background.ts,content-script.ts}"
+    "build": "NODE_ENV=production npm run build:tailwind && npm run build:static && parcel build src/{background.ts,content-script.ts} src/popup/{menu.ts,menu.html} src/popup/**/*.ts"
   },
   "author": "",
   "license": "MIT",
@@ -16,6 +16,7 @@
     "feather-icons": "^4.28.0",
     "hybrids": "^6.0.0",
     "tailwindcss": "^2.2.7",
+    "ts-debounce": "^3.0.0",
     "web-ext": "^6.3.0"
   },
   "devDependencies": {

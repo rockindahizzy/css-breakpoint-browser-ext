@@ -9,8 +9,12 @@
     "tabs"
   ],
   "icons": {
-    "48": "icons/40.png",
-    "96": "icons/80.png"
+    "16": "icons/16.png",
+    "19": "icons/19.png",
+    "38": "icons/38.png",
+    "48": "icons/48.png",
+    "96": "icons/96.png",
+    "128": "icons/128.png"
   },
   "background": {
     "scripts": ["background.js"]

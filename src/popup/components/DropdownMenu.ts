@@ -15,8 +15,8 @@ const toggleDropdown = (host) => {
 };
 
 const options = [
-  { name: 'Tailwindcss', value: 'tailwindBuiltIn' },
   { name: 'Bootstrap', value: 'bootstrapBuiltIn' },
+  { name: 'Tailwindcss', value: 'tailwindBuiltIn' },
 ];
 
 const DropdownMenu = {
@@ -25,9 +25,9 @@ const DropdownMenu = {
   showDropdown: false,
   render: ({ selected, showDropdown }: { selected: string, showDropdown: boolean }) => html`
     <div class="relative">
-      <div class="flex gap-6 w-full justify-center" onclick="${toggleDropdown}">
-          <div class="text-white">${options.find(o => o.value === selected).name}</div>
-          <div innerHTML="${icons['chevron-down'].toSvg({ class: 'text-blue-500' })}"></div>
+      <div class="flex w-full justify-center cursor-pointer" onclick="${toggleDropdown}">
+          <div class="text-white border-b border-gray-500 pr-10">${options.find(o => o.value === selected).name}</div>
+          <div class="border-b border-gray-500" innerHTML="${icons['chevron-down'].toSvg({ class: 'text-blue-500' })}"></div>
       </div>
       <div>${showDropdown && html`<div class="bg-white absolute w-full h-24 rounded top-8 overflow-y-scroll">
           ${options.map((option, i) => html`

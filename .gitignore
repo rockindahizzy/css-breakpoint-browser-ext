@@ -1,6 +1,5 @@
 .DS_Store
 .idea/
 dist/
-icons/
 .parcel-cache/
 node_modules/

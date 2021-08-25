@@ -9,8 +9,7 @@
     ],
     "ignorePatterns": [
         "tailwind.config.js",
-        "postcss.config.js",
-        "bundle.d.ts"
+        "postcss.config.js"
     ],
     "rules": {
         "import/extensions": "off",

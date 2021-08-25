@@ -32,7 +32,7 @@ export default define({
   render: (host) => html`
       <div>
         ${html.resolve( getStorageValues(host).then(({ enabled, selectedRule, displayPosition }) => html`
-          <div class="text-blue-500 flex gap-4">
+          <div class="text-2xl text-white flex gap-4">
             Break Points
             <label
               for="enableToggle" 
@@ -46,8 +46,8 @@ export default define({
                   onchange="${setPluginToggle}"
                   checked="${enabled ?? false}"
                 />
-                <div class="w-10 h-4 bg-blue-500 rounded-full shadow-inner"></div>
-                <div class="dot absolute w-6 h-6 bg-white rounded-full shadow -left-1 -top-1 transition"></div>
+                <div class="w-10 h-5 bg-gray-500 rounded-full shadow-inner"></div>
+                <div class="dot absolute w-5 h-5 bg-white rounded-full shadow left-0 top-0 transition"></div>
             </div>
           </label>
           </div>
