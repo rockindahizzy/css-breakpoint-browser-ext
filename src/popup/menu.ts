@@ -4,6 +4,7 @@ import { html, define } from 'hybrids';
 import * as browser from 'webextension-polyfill';
 import { getValues } from '../BrowserStorage';
 import { getHostFromTabUrl } from '../utils';
+import CreateBreakpointForm from './components/CreateBreakpointForm';
 import DropdownMenu from './components/DropdownMenu';
 import PositionSelector from './components/PositionSelector';
 
@@ -24,14 +25,24 @@ const setPluginToggle = async (host, e: Event) => {
   await browser.runtime.sendMessage({ action: 'ENABLE_DISPLAY', value: checked });
 };
 
+const createBreakpointClicked = (host) => {
+  console.log('dispatched');
+  host.showCreateBreakpoint = true;
+  document.getElementsByTagName('menu-popup')[0].render();
+};
+
 export default define({
   tag: 'menu-popup',
   enabled: false,
   selectedRule: 'bootstrapBuiltIn',
   displayPosition: 'selectTopLeft',
+  showCreateBreakpoint: false,
+  loading: true,
   render: (host) => html`
       <div>
-        ${html.resolve( getStorageValues(host).then(({ enabled, selectedRule, displayPosition }) => html`
+    ${html.resolve( getStorageValues(host).then(({ enabled, selectedRule, displayPosition, showCreateBreakpoint }) => html`
+        ${host.showCreateBreakpoint ? 
+    html`<create-breakpoint-form></create-breakpoint-form>` : html`
           <div class="text-2xl text-white flex gap-4">
             Break Points
             <label
@@ -52,10 +63,10 @@ export default define({
           </label>
           </div>
           <div class="h-4"></div>
-          <dropdown-menu selected="${selectedRule}"></dropdown-menu>
+          <dropdown-menu selected="${selectedRule}" oncreate-breakpoint="${createBreakpointClicked}"></dropdown-menu>
           <div class="h-4"></div>
           <position-selector selected="${displayPosition}"></position-selector>
-        `))}
+        `}`))}
       </div>
     `.style(cssText),
-}, DropdownMenu, PositionSelector);
+}, DropdownMenu, PositionSelector, CreateBreakpointForm);
