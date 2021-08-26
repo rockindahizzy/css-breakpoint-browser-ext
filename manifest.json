@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "CSS Breakpoint Extension",
   "version": "0.1.0",
-  "description": "A browser extension that displays current tailwind breakpoint.",
+  "description": "A browser extension that displays the current breakpoint for the select css framework.",
   "permissions": [
     "activeTab",
     "storage",

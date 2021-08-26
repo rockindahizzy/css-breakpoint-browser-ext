@@ -40,10 +40,6 @@ const updateDisplay = (width: number, root: ShadowRoot) => {
       Breakpoints.bootstrapBreakpoints,
     width,
   );
-  container.innerHTML = `
-    <div>${breakPoint.name}</div>
-    <div id="widthDisplay" class="text-sm">${window.innerWidth}</div>
-  `;
   container.style.backgroundColor = breakPoint.color;
   const leftPosition = Number(container.style.left.replace('px', ''));
   const topPosition = Number(container.style.top.replace('px', ''));
@@ -53,6 +49,11 @@ const updateDisplay = (width: number, root: ShadowRoot) => {
   if (topPosition + container.offsetHeight > window.innerHeight) {
     container.style.top = `${(window.innerHeight - container.offsetHeight) - 15 }px`;
   }
+
+  container.innerHTML = `
+    <div>${breakPoint.name}</div>
+    <div id="widthDisplay" class="text-sm">${window.innerWidth}</div>
+  `;
   draggable(container);
 };
 
@@ -80,20 +81,24 @@ const onChangeBreakpointRules = (value) => {
   updateDisplay(window.innerWidth, shadowRoot);
 };
 
-const toggleDisplay = (isEnabled: boolean) => {
+const toggleDisplay = async (isEnabled: boolean) => {
   if (isEnabled) {
     if (!selectedBreakpointRules && !currentPosition){
       console.log('Is this happening?', { selectedBreakpointRules, currentPosition });
       selectedBreakpointRules = 'bootstrapBuiltIn';
       currentPosition = 'selectTopLeft';
     }
-    if (!document.getElementById('breakpointCssHostContainer')) {
+    if (!shadowHost) {
       shadowHost = document.createElement('div');
       shadowHost.id = 'breakpointCssHostContainer';
       shadowRoot = shadowHost.attachShadow({ mode: 'open' });
       shadowRoot.innerHTML = html;
       document.body.insertAdjacentElement('afterend', shadowHost);
+    } else if (!document.getElementById('breakpointCssHostContainer')){
+      document.body.insertAdjacentElement('afterend', shadowHost);
     }
+    const { [window.location.hostname]: values } = await getValues(window.location.hostname);
+    draggedPosition = values.position;
     onChangePosition(currentPosition);
     if (draggedPosition){
       const container = shadowRoot.getElementById('bp-container');
@@ -102,7 +107,7 @@ const toggleDisplay = (isEnabled: boolean) => {
     }
     updateDisplay(window.innerWidth, shadowRoot);
   } else {
-    document.getElementById('breakpointCssHostContainer').remove();
+    shadowHost.remove();
   }
 };
 
