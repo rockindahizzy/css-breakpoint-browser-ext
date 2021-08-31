@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <div class="font-bold text-lg">Css Breakpoints</div>
-    <div class="mt-5 mb-5">
+  <div class="text-center">
+    <div class="font-bold text-lg">Create Ruleset</div>
+    <div class="mt-5 mb-5 border-t border-b pt-2 pb-4">
       <label>
-        <span class="block">
+        <span class="block" style="font-size: 1.2rem;">
           Name <span v-if="nameMissing" class="text-red-500">(Required)</span>
         </span>
         <input
@@ -20,8 +20,9 @@
       v-if="!isValid()"
       class="text-red-500 text-center mb-4">
       <p>Please verify values are ascending</p>
-      <p>The final entry will not have a width</p>
+      <p>The final entry cannot have a width</p>
     </div>
+    <div style="font-size: 1.2rem;">Breakpoints</div>
     <div class="flex justify-between text-center">
       <span>Color</span>
       <span>Name</span>
@@ -52,9 +53,12 @@
       <input
         class="w-12"
         type="text"
+        :class="{
+          ['border-red-500']: breakpoint.nameValidationError,
+        }"
         maxlength="4"
         v-model="breakpoint.name"
-        placeholder="SM"
+        :placeholder="i === breakpoints.length - 1 ? 'SM' : ''"
         @input="(e) => onTextInput(e.target.value, breakpoint, i)"
         @blur="(e) => validateMaxWidth(breakpoint, i)"
       />
@@ -63,7 +67,6 @@
         type="number"
         :class="{
           ['border-red-500']: breakpoint.widthValidationError,
-          // ['border-white']: !breakpoint.widthValidationError,
         }"
         :placeholder="infinity"
         v-model.number="breakpoint.maxWidth"
@@ -72,27 +75,28 @@
       />
     </div>
     <div class="w-full flex gap-4 mt-4 justify-between">
-      <feather-icon
-        class="cursor-pointer"
-        title="cancel"
-        name="x"
-        @click="userAction('cancel')"
-        icon-class="text-red-500"
-      />
-      <feather-icon
-        class="cursor-pointer"
+      <div
+          class="cursor-pointer text-red-500"
+          title="cancel"
+          @click="userAction('cancel')"
+      >
+        Cancel
+      </div>
+      <div
+        class="cursor-pointer text-green-500"
         title="Save"
-        name="check"
         @click="userAction('save')"
-        icon-class="text-green-500"
-      />
-      <feather-icon
+      >
+        Save
+      </div>
+      <div
+        v-if="customizationDetails.action === 'edit'"
         class="cursor-pointer"
         title="delete"
-        name="trash"
-        v-if="customizationDetails.action === 'edit'"
         @click="userAction('delete')"
-      />
+      >
+        Delete
+      </div>
     </div>
   </div>
 </template>
@@ -109,6 +113,7 @@ type BreakpointInput = {
   maxWidth: number | string | null
   color: string
   widthValidationError: boolean
+  nameValidationError: boolean
 };
 
 export default Vue.extend({
@@ -155,21 +160,30 @@ export default Vue.extend({
     },
     isFinalDataValid() {
       // Validate rule name
-      if (this.ruleName === '' || this.ruleName.length > 80) return false;
+      let isValid = true;
+      if (this.ruleName === '' || this.ruleName.length > 80) {
+        this.nameMissing = true;
+        isValid = false;
+      }
       let prevWidth = -1;
       for (let i = 0; i < this.inputValues.length; i++) {
         const isLast = i === this.inputValues.length - 1;
         const { name, maxWidth } = this.inputValues[i];
-        if (name === '') return false;
+        if (name === '') {
+          this.inputValues[i].nameValidationError = true;
+          isValid = false;
+        }
         if (isLast && maxWidth !== null && maxWidth !== '' && maxWidth !== undefined) {
-          return false;
+          this.inputValues[i].widthValidationError = true;
+          isValid = false;
         }
         if (!isLast && (maxWidth === null || maxWidth === '' || maxWidth === undefined || maxWidth < prevWidth)) {
-          return false;
+          this.inputValues[i].widthValidationError = true;
+          isValid = false;
         }
         prevWidth = maxWidth as number;
       }
-      return true;
+      return isValid;
     },
     userAction(action: 'save' | 'cancel' | 'delete') {
       const validated = this.isFinalDataValid();
@@ -195,11 +209,6 @@ export default Vue.extend({
         emitMessage({ action: 'SAVE_USER_CSS_RULE', value: newRule });
         emitMessage({ action: 'CHANGE_BREAKPOINT_RULE', value: id });
       } if (action === 'save' && !validated) {
-        const { length } = this.inputValues;
-        if (this.inputValues[length - 1].maxWidth !== '' && this.inputValues[length - 1].maxWidth !== null) {
-          this.inputValues[length - 1].widthValidationError = true;
-        }
-        this.nameMissing = this.ruleName === '';
         return this.$forceUpdate();
       }
       if (action === 'delete') {
@@ -228,7 +237,11 @@ export default Vue.extend({
       const returnValue = [] as BreakpointInput[];
       if (returnValue.length === 0) {
         returnValue.push({
-          name: '', maxWidth: null, color: '#4b4bd7', widthValidationError: false,
+          name: '',
+          maxWidth: null,
+          color: '#4b4bd7',
+          widthValidationError: false,
+          nameValidationError: false,
         });
       }
       return this.inputValues.concat(returnValue);
@@ -271,5 +284,9 @@ export default Vue.extend({
   /* Firefox */
   input[type=number] {
     -moz-appearance: textfield;
+  }
+
+  input:focus::placeholder {
+    color: transparent;
   }
 </style>

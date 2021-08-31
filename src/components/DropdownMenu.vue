@@ -18,20 +18,20 @@
           />
         </div>
         <feather-icon
-          title="Edit"
+          v-tooltip="Edit"
           v-if="this.selectedRule >= 0"
           name="edit-2"
           icon-class="h-4"
           @click="customizeBreakpoints('edit')"
         />
         <feather-icon
-          title="Copy"
+          v-tooltip="Copy"
           name="copy"
           icon-class="h-4"
           @click="customizeBreakpoints('copy')"
         />
         <feather-icon
-          title="Create"
+          v-tooltip="Create"
           name="plus-square"
           icon-class="h-4"
           @click="customizeBreakpoints('create')"
@@ -43,7 +43,10 @@
       >
         <div
           v-for="rule in ruleOptions" :key="rule.id"
-          :class="getSelectionClass(rule.id)"
+          :class="{
+            'bg-green-500': rule.id === selectedRule,
+            ...getSelectionClass(rule.id)
+          }"
           class="text-black hover:bg-blue-300 px-2 py-4"
           @click="selectionChanged(rule.id)">
             {{rule.name}}
