@@ -26,7 +26,7 @@
     <div class="flex justify-between text-center">
       <span>Color</span>
       <span>Name</span>
-      <span>Max Width</span>
+      <span>Break Width</span>
     </div>
     <div
       class="flex gap-4 mb-2 justify-between p-1"
@@ -200,7 +200,7 @@ export default Vue.extend({
           name: this.ruleName,
           breakpoints: this.inputValues.map<Breakpoint>((v) => ({
             name: v.name,
-            maxWidth: v.maxWidth === '' || v.maxWidth === null ? undefined : Number(v.maxWidth),
+            maxWidth: (Number.isNaN(v.maxWidth) || v.maxWidth === '' || v.maxWidth === null) ? undefined : v.maxWidth,
             color: v.color,
           })),
         };
