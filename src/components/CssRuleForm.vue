@@ -200,7 +200,7 @@ export default Vue.extend({
           name: this.ruleName,
           breakpoints: this.inputValues.map<Breakpoint>((v) => ({
             name: v.name,
-            maxWidth: (Number.isNaN(v.maxWidth) || v.maxWidth === '' || v.maxWidth === null) ? undefined : v.maxWidth,
+            maxWidth: (Number.isNaN(v.maxWidth) || v.maxWidth === '' || v.maxWidth === null) ? undefined : v.maxWidth as number,
             color: v.color,
           })),
         };
