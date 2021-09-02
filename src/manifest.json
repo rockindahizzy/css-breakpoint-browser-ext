@@ -6,8 +6,7 @@
   "default_locale": "en",
   "permissions": [
     "activeTab",
-    "storage",
-    "tabs"
+    "storage"
   ],
   "icons": {
     "16": "icons/16.png",

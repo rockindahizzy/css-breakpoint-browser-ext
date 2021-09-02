@@ -26,7 +26,7 @@
     <div class="flex justify-between text-center">
       <span>Color</span>
       <span>Name</span>
-      <span>Break Width</span>
+      <span>Break Point</span>
     </div>
     <div
       class="flex gap-4 mb-2 justify-between p-1"
@@ -41,13 +41,11 @@
           name="maximize"
           icon-class="w-10 h-10 text-blue-500"
         />
-        <input
-          class="absolute"
-          style="top: 8px; left: 8px;"
-          type="color"
-          placeholder="#fff"
+        <color-input
+          v-if="i < inputValues.length"
+          class="absolute color-display"
+          style="top: 8px; left: 8px; width: 32px; height: 32px;"
           v-model="breakpoint.color"
-          @blur="(e) => onTextInput(e.target.value, breakpoint, i)"
         />
       </div>
       <input
@@ -104,6 +102,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { mapMutations, mapState } from 'vuex';
+import ColorInput from '@/components/ColorInput.vue';
 import { emitMessage } from '@/BrowserMessaging';
 import { Breakpoint, CssRule } from '@/types';
 import FeatherIcon from '@/components/FeatherIcon.vue';
@@ -113,12 +112,13 @@ type BreakpointInput = {
   maxWidth: number | string | null
   color: string
   widthValidationError: boolean
-  nameValidationError: boolean
+  nameValidationError: boolean,
+  showColorPicker: boolean,
 };
 
 export default Vue.extend({
   name: 'CssRuleForm',
-  components: { FeatherIcon },
+  components: { ColorInput, FeatherIcon },
   props: {
     customizationDetails: {
       type: Object,
@@ -141,6 +141,10 @@ export default Vue.extend({
     }
   },
   methods: {
+    onColorClicked(breakpointIndex: number) {
+      this.breakpoints[breakpointIndex].showColorPicker = true;
+      this.$forceUpdate();
+    },
     isBreakpointEmpty(breakpoint: BreakpointInput) {
       let isEmpty = false;
       isEmpty = breakpoint.name === '' || breakpoint.name == null;
@@ -242,6 +246,7 @@ export default Vue.extend({
           color: '#4b4bd7',
           widthValidationError: false,
           nameValidationError: false,
+          showColorPicker: false,
         });
       }
       return this.inputValues.concat(returnValue);
@@ -260,12 +265,11 @@ export default Vue.extend({
      font-weight: 900;
      text-align: center;
   }
-  input[type="color"]{
+  .color-display{
     @apply
     h-6
     w-6
     outline-none;
-   -webkit-appearance: none;
   }
 
   input[type="color"]::-webkit-color-swatch-wrapper {

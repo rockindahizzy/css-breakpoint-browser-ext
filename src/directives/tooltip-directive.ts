@@ -54,14 +54,14 @@ export default (el: HTMLElement, binding: DirectiveBinding) => {
     );
     tooltip.innerText = tooltipText;
     tooltip.style.display = 'none';
-    el.onmouseover = () => {
+    el.addEventListener('mouseover', () => {
       console.log('mouseOver');
       tooltip.style.display = 'inline-block';
       el.onmouseout = () => {
         tooltip.style.display = 'none';
         el.onmouseout = null;
       };
-    };
+    });
     el.style.position = 'relative';
     el.appendChild(tooltip);
   }

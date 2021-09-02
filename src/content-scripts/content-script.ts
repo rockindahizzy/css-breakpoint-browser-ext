@@ -137,7 +137,6 @@ const toggleDisplay = async (isEnabled: boolean) => {
 };
 
 browser.runtime.onMessage.addListener(({ action, value }: Action) => {
-  console.log({ action, value });
   if (action === 'CHANGE_POSITION') {
     shadowRoot.getElementById('bp-container').style.top = null;
     shadowRoot.getElementById('bp-container').style.left = null;
