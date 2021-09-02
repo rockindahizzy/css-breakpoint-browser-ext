@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "CSS Breakpoint Extension",
+  "name": "CSS Breakpoint Button",
   "homepage_url": "https://css.usefulapps.cloud",
   "description": "A browser extension that displays the current breakpoint for the selected css framework.",
   "default_locale": "en",
@@ -38,7 +38,7 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "projects@divordie.com",
+      "id": "webext@divordie.com",
       "strict_min_version": "53.0"
     }
   }
