@@ -156,21 +156,25 @@ browser.runtime.onMessage.addListener(({ action, value }: Action) => {
 
 window.onfocus = () => {
   getValues().then((values: any) => {
-    const hostValues = values[location.hostname];
+    const hostKey = location.hostname + (location.port ? `:${location.port}` : '');
+    const hostValues = values[hostKey];
     const { cssRules: storedCssRules } = values;
     selectedCssRuleId = hostValues?.selectedRule ?? -1;
     currentPosition = hostValues?.displayPosition ?? 'selectTopLeft';
     cssRules = initializeBreakpoints(storedCssRules);
-    toggleDisplay(hostValues.isEnabled);
+    const isEnabled = hostValues?.isEnabled ?? false;
+    toggleDisplay(isEnabled);
   });
 };
 
 getValues().then((values: any) => {
-  const hostValues = values[location.hostname];
+  const hostKey = location.hostname + (location.port ? `:${location.port}` : '');
+  const hostValues = values[hostKey];
   const { cssRules: storedCssRules } = values;
   selectedCssRuleId = hostValues?.selectedRule ?? -1;
   currentPosition = hostValues?.displayPosition ?? 'selectTopLeft';
   draggedPosition = hostValues?.position;
   cssRules = initializeBreakpoints(storedCssRules);
-  toggleDisplay(hostValues.isEnabled);
+  const isEnabled = hostValues?.isEnabled ?? false;
+  toggleDisplay(isEnabled);
 });
